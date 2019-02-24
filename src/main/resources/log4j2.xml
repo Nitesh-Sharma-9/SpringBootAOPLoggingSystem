@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+<Properties>
+    <Property name="log-path">/home/decimal/workspace/SpringBootAOPLoggingSystem/logs/</Property>
+    <Property name="log-pattern">%d{dd-MM-yyyy HH:mm:ss.Mss} %p %e %C(%F(%L)) : %m%n</Property>
+
+</Properties>
+
+<Appenders>
+    <!-- Console Appender -->
+    <Console name="Console" target="SYSTEM_OUT">
+        <PatternLayout
+                pattern="${log-pattern}" />
+    </Console>
+
+
+    <!-- File Appender -->
+    <RollingFile name="general"
+                 fileName="${log-path}/general.log"
+                 filePattern="${log-path}/$${date:yyyy-MM}/general%d{MM-dd-yyyy}-%i.log.gz">
+        <PatternLayout
+                pattern="${log-pattern}">
+        </PatternLayout>
+        <!-- set file size policy -->
+        <Policies>
+            <TimeBasedTriggeringPolicy interval="1"
+                                       modulate="true" />
+            <SizeBasedTriggeringPolicy size="25 MB" />
+        </Policies>
+        <DefaultRolloverStrategy max="20" />
+    </RollingFile>
+
+    <RollingFile name="error"
+                 fileName="${log-path}/error.log"
+                 filePattern="${log-path}/$${date:yyyy-MM}/error%d{MM-dd-yyyy}-%i.log.gz">
+        <PatternLayout
+                pattern="${log-pattern}">
+        </PatternLayout>
+        <!-- set file size policy -->
+        <Policies>
+            <TimeBasedTriggeringPolicy interval="1"
+                                       modulate="true" />
+            <SizeBasedTriggeringPolicy size="25 MB" />
+        </Policies>
+        <DefaultRolloverStrategy max="20" />
+    </RollingFile>
+
+    <RollingFile name="audit" fileName="${log-path}/audit.log"
+                 filePattern="${log-path}/$${date:yyyy-MM}/audit%d{MM-dd-yyyy}-%i.log.gz">
+        <PatternLayout
+                pattern="${log-pattern}">
+        </PatternLayout>
+        <Policies>
+            <TimeBasedTriggeringPolicy interval="1"
+                                       modulate="true" />
+            <SizeBasedTriggeringPolicy size="25 MB" />
+        </Policies>
+        <DefaultRolloverStrategy max="20" />
+    </RollingFile>
+
+</Appenders>
+
+<Loggers>
+
+    <Logger name="general" additivity="false" >
+        <AppenderRef ref="general" level="info"/>
+    </Logger>
+
+    <Logger name="error" additivity="false">
+        <AppenderRef ref="error" level="error"/>
+    </Logger>
+
+    <Logger name="audit" additivity="false">
+        <AppenderRef ref="audit" level="debug"/>
+    </Logger>
+
+    <Root level="info" additivity="false">
+        <AppenderRef ref="Console" level="INFO"/>
+    </Root>
+
+</Loggers>
+
+</Configuration>
